@@ -15,40 +15,55 @@ void Scene::Tick(void)
 	//al_draw_scaled_bitmap(fundo,0,0,902,674,0,0,SCREEN_W,SCREEN_H,0);
 	al_draw_filled_rectangle(0,0,SCREEN_W,SCREEN_H,al_map_rgb(200,200,200));
 
+	if(Scene::getMouse_button() == _MOUSE_RIGHT)
+	{
+		l_object->setX(Scene::getMouse_position().x);
+		l_object->setY(Scene::getMouse_position().y);
+	}
 
-	checkCollisions();
+	//checkCollisions();
 
 }
+
 
 void Scene::MouseDown(void)
 {
 
-	if(ballCount >= 100)
-	{
-		Scene::popObject();
-		ballCount --;
-	}
-
-	if(rand() % 20 == 0){
-		Ball *ball = new Ball();
-		ball->Init();
-		ball->setX(Scene::getMouseDown_position().x);
-		ball->setY(Scene::getMouseDown_position().y);
-		ball->setColor(getRandomColor());
-		ball->setDirection(getRandomDirection());
-		ball->setVelocity(getRandomVelocity());
-
-		ballCount ++;
-
-		addObject(ball);
-	}
 
 }
 
 void Scene::MouseUp(void)
 {
-	
-	
+	std::cout<<Scene::getMouse_button()<<std::endl;
+	if(Scene::getMouse_button() == _MOUSE_LEFT){
+		if(ballCount >= 100)
+		{
+			Scene::popObject();
+			ballCount --;
+		}
+
+		if(rand() % 1 == 0){
+			Ball *ball = new Ball();
+			ball->Init();
+			ball->setX(Scene::getMouse_position().x);
+			ball->setY(Scene::getMouse_position().y);
+			ball->setColor(getRandomColor());
+			ball->setDirection(getRandomDirection());
+			ball->setVelocity(getRandomVelocity());
+			_direction d = {0,0};
+			ball->setDirection(d);
+
+			ballCount ++;
+
+			addObject(ball);
+
+			l_object = ball;
+		}
+	}
+}
+
+void Scene::MouseMove(void)
+{
 }
 
 
@@ -114,14 +129,14 @@ _direction Scene::getRandomDirection()
 
 	switch (rLR)
 	{
-		case 0: dirLeftRight = _DIRECTION_LEFT;break;
-		case 1: dirLeftRight = _DIRECTION_RIGHT;break;
+	case 0: dirLeftRight = _DIRECTION_LEFT;break;
+	case 1: dirLeftRight = _DIRECTION_RIGHT;break;
 	}
 
 	switch (rUD)
 	{
-		case 0: dirUpDown = _DIRECTION_UP;break;
-		case 1: dirUpDown = _DIRECTION_DOWN;break;
+	case 0: dirUpDown = _DIRECTION_UP;break;
+	case 1: dirUpDown = _DIRECTION_DOWN;break;
 	}
 
 	_direction direction = {dirLeftRight,dirUpDown};
@@ -146,19 +161,19 @@ void Scene::checkCollisions()
 {
 	std::list<GameObject *> *obj = getObjects(_BALL);
 	if(obj->size() > 0)
-	for(std::list<GameObject *>::iterator it = obj->begin(); it != obj->end(); ++it)
-	{
-		for(std::list<GameObject *>::iterator it2 = it; it2 != obj->end(); ++it2)
+		for(std::list<GameObject *>::iterator it = obj->begin(); it != obj->end(); ++it)
 		{
-			if((*it)->CheckCollisions(*it2))
+			for(std::list<GameObject *>::iterator it2 = it; it2 != obj->end(); ++it2)
 			{
-				_direction c_direction = (*it)->getDirection();
-				c_direction.x *= -1;
-				c_direction.y *= -1;
-				(*it)->setDirection(c_direction);
+				if((*it)->CheckCollisions(*it2))
+				{
+					_direction c_direction = (*it)->getDirection();
+					c_direction.x *= -1;
+					c_direction.y *= -1;
+					(*it)->setDirection(c_direction);
+				}
 			}
 		}
-	}
 }
 
 

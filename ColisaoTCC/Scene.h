@@ -13,11 +13,13 @@ private:
 	long ballCount;
 
 	ALLEGRO_BITMAP *ballBitmap;
+	GameObject *l_object;
 
 	void Tick(void);
 
 	void MouseDown(void);
 	void MouseUp(void);
+	void MouseMove(void);
 
 	void KeyUp(void);
 	void KeyDown(void);

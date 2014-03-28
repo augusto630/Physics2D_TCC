@@ -61,14 +61,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="..\..\PikinSticks\Debug\DefaultFont.ttf" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resource.resx">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\SpriteBall.png" />
+    <Font Include="..\Debug\DefaultFont.ttf" />
   </ItemGroup>
 </Project>

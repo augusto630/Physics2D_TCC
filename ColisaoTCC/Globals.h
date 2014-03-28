@@ -12,7 +12,8 @@ enum DIRECTION_UP_DOWN{_DIRECTION_UP = -1, _DIRECTION_DOWN = 1};//See GameObject
 enum ID{_BALL = 1,_OBSTACLE = 3,_MISC = 4}; //may add a BULLET id or INTERACTABLE
 enum STATE{_TITLE,_PLAYING,_LOST};
 enum KEYS{_KEY_UP,_KEY_DOWN,_KEY_LEFT,_KEY_RIGHT,_KEY_SPACE};//keyboard keys maybe add a action key as well
-enum MOUSE{_MOUSE_DOWN = 0,_MOUSE_UP = 1};
+enum MOUSE{_MOUSE_DOWN = 0,_MOUSE_UP = 1, _MOUSE_MOVE = 2};
+enum MOUSE_BUTTON{_MOUSE_LEFT = 0,_MOUSE_RIGHT = 1, _MOUSE_BUTTON_NONE_OTHER = 2};//may add middle button, scroll button, etc..
 
 struct _position
 {

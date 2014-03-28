@@ -32,7 +32,8 @@ private:
 	bool keys[5];//Folow Keys Struct Layout
 
 	bool s_mouse[2];//0-MouseDown || 1 - MouseUp	
-	_position p_mouse[2];//0-Position MouseDown || 1 - Position MouseUp
+	_position p_mouse[3];//0-Position MouseDown || 1 - Position MouseUp || 2 -Position MouseMove
+	MOUSE_BUTTON b_mouse;
 
 	std::string title;
 	bool done;
@@ -153,6 +154,8 @@ public:
 
 	_position getMouseDown_position(void){return p_mouse[_MOUSE_DOWN];}
 	_position getMouseUp_position(void){return p_mouse[_MOUSE_UP];}
+	_position getMouse_position(void){return p_mouse[_MOUSE_MOVE];}
+	MOUSE_BUTTON getMouse_button(void){return b_mouse;}
 	ALLEGRO_FONT *getDefaultFont(void){return font;}
 
 
@@ -160,6 +163,7 @@ public:
 
 	virtual void MouseDown(void);
 	virtual void MouseUp(void);
+	virtual void MouseMove(void);
 
 	virtual void KeyUp(void);
 	virtual void KeyDown(void);

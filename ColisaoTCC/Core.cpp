@@ -18,6 +18,11 @@ Core::Core()
 	p_mouse[_MOUSE_UP].x = -1;
 	p_mouse[_MOUSE_UP].y = -1;
 
+	p_mouse[_MOUSE_MOVE].x = -1;
+	p_mouse[_MOUSE_MOVE].y = -1;
+
+	b_mouse = _MOUSE_BUTTON_NONE_OTHER;
+
 	title = "";
 	done = true;
 	render = false;
@@ -220,6 +225,19 @@ void Core::GameLoop()
 		if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
 
+			switch (event.mouse.button)
+			{
+			case 1:
+				b_mouse = _MOUSE_LEFT;
+				break;
+			case 2:
+				b_mouse = _MOUSE_RIGHT;
+				break;
+			default:
+				b_mouse = _MOUSE_BUTTON_NONE_OTHER;
+				break;
+			}
+
 			s_mouse[_MOUSE_DOWN] = true;
 
 			p_mouse[_MOUSE_DOWN].x = event.mouse.x;
@@ -237,6 +255,19 @@ void Core::GameLoop()
 
 		else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
 		{
+			switch (event.mouse.button)
+			{
+			case 1:
+				b_mouse = _MOUSE_LEFT;
+				break;
+			case 2:
+				b_mouse = _MOUSE_RIGHT;
+				break;
+			default:
+				b_mouse = _MOUSE_BUTTON_NONE_OTHER;
+				break;
+			}
+
 			s_mouse[_MOUSE_UP] = true;
 
 			p_mouse[_MOUSE_UP].x = event.mouse.x;
@@ -247,14 +278,24 @@ void Core::GameLoop()
 			p_mouse[_MOUSE_DOWN].y = -1;
 
 		}
-		if(event.type == ALLEGRO_EVENT_MOUSE_AXES && s_mouse[_MOUSE_DOWN])
-		{
-			p_mouse[_MOUSE_DOWN].x = event.mouse.x;
-			p_mouse[_MOUSE_DOWN].y = event.mouse.y;
-		}
-
 
 		#pragma endregion MouseUp
+
+		#pragma region
+
+		if(event.type == ALLEGRO_EVENT_MOUSE_AXES)
+		{
+			std::cout<<"Move!"<<b_mouse<<std::endl;
+			p_mouse[_MOUSE_MOVE].x = event.mouse.x;
+			p_mouse[_MOUSE_MOVE].y = event.mouse.y;
+
+			if(s_mouse[_MOUSE_DOWN])				
+				p_mouse[_MOUSE_DOWN] = p_mouse[_MOUSE_MOVE];
+			if(s_mouse[_MOUSE_UP])
+				p_mouse[_MOUSE_UP] = p_mouse[_MOUSE_MOVE];
+		}
+
+		#pragma endregion MouseMove
 
 		#pragma region 
 		if(event.type == ALLEGRO_EVENT_TIMER){
@@ -263,10 +304,12 @@ void Core::GameLoop()
 
 			if(s_mouse[_MOUSE_DOWN])
 			{
+				s_mouse[_MOUSE_DOWN] = false;
 				MouseDown();
 			}
 			if(s_mouse[_MOUSE_UP])
 			{
+				s_mouse[_MOUSE_UP] = false;
 				MouseUp();
 			}
 
@@ -301,6 +344,7 @@ void Core::Tick(){};
 
 void Core::MouseDown(void){};
 void Core::MouseUp(void){};
+void Core::MouseMove(void){};
 
 void Core::KeyUp(void){};
 void Core::KeyDown(void){};
