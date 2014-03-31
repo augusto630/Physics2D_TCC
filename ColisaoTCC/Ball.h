@@ -1,12 +1,16 @@
 #pragma once
 
 #include "GameObject.h"
+#include <math.h>
 
 class Ball: public GameObject
 {
 private:
 	int radius;
+	float mass;
+	ALLEGRO_FONT *font;
 	ALLEGRO_COLOR color;
+	int index;
 
 public:
 	Ball();
@@ -16,7 +20,14 @@ public:
 	void Update();
 	void Render();
 
-	void setColor(ALLEGRO_COLOR *color){Ball::color = *color;};
+	void setColor(ALLEGRO_COLOR color){Ball::color = color;};
+	void setFont(ALLEGRO_FONT *font){Ball::font = font;};
+
+	void setMass(float mass){Ball::mass = mass;};
+	float getMass(){return Ball::mass;};
+
+	int getIndex(){return index;};
+	void setIndex(int index){Ball::index = index;};
 
 	void MoveUp();
 	void MoveDown();
@@ -24,5 +35,5 @@ public:
 	void MoveRight();
 	void Stop();
 
-	void Collide(int objectID);
+	void Collided(GameObject *collidedObject);
 };

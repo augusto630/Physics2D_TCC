@@ -3,6 +3,7 @@
 #include <iostream>
 #include <allegro5\allegro5.h>
 #include <allegro5\allegro_primitives.h>
+#include <allegro5\allegro_font.h>
 #include "Globals.h"
 
 class GameObject
@@ -55,11 +56,20 @@ public:
 	void setY(float y){GameObject::y = y;}
 
 	void setVelocity(_velocity velocity){GameObject::velX = velocity.x; GameObject::velY = velocity.y;}
+	_velocity getVelocity()
+	{
+		_velocity velocity = {GameObject::velX,GameObject::velY};
+		return velocity;
+	}
+
 	void setGravity(float gravity){GameObject::gravity = gravity;}
 	void setDirection(_direction direction){GameObject::dirX = direction.x; GameObject::dirY = direction.y;}
 
-	_direction getDirection(void){_direction direction = {GameObject::dirX,GameObject::dirY}; return direction;}
-
+	_direction getDirection(void)
+	{
+		_direction direction = {GameObject::dirX,GameObject::dirY};
+		return direction;
+	}
 
 	int getBoundX(){return boundX;}
 	int getBoundY(){return boundY;}

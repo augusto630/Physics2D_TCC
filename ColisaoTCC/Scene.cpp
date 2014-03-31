@@ -15,13 +15,14 @@ void Scene::Tick(void)
 	//al_draw_scaled_bitmap(fundo,0,0,902,674,0,0,SCREEN_W,SCREEN_H,0);
 	al_draw_filled_rectangle(0,0,SCREEN_W,SCREEN_H,al_map_rgb(200,200,200));
 
-	if(Scene::getMouse_button() == _MOUSE_RIGHT)
+
+	if(l_object && Scene::getMouse_button() == _MOUSE_RIGHT)
 	{
 		l_object->setX(Scene::getMouse_position().x);
-		l_object->setY(Scene::getMouse_position().y);
+		l_object->setY(Scene::getMouse_position().y);		
 	}
 
-	//checkCollisions();
+	checkCollisions();
 
 }
 
@@ -34,7 +35,6 @@ void Scene::MouseDown(void)
 
 void Scene::MouseUp(void)
 {
-	std::cout<<Scene::getMouse_button()<<std::endl;
 	if(Scene::getMouse_button() == _MOUSE_LEFT){
 		if(ballCount >= 100)
 		{
@@ -45,13 +45,14 @@ void Scene::MouseUp(void)
 		if(rand() % 1 == 0){
 			Ball *ball = new Ball();
 			ball->Init();
+			ball->setFont(Scene::getDefaultFont());
 			ball->setX(Scene::getMouse_position().x);
 			ball->setY(Scene::getMouse_position().y);
 			ball->setColor(getRandomColor());
 			ball->setDirection(getRandomDirection());
 			ball->setVelocity(getRandomVelocity());
-			_direction d = {0,0};
-			ball->setDirection(d);
+			ball->setDirection(getRandomDirection());
+			ball->setMass(rand()%5);
 
 			ballCount ++;
 
@@ -109,13 +110,13 @@ void Scene::KeySpace(void)
 
 #pragma region
 
-ALLEGRO_COLOR *Scene::getRandomColor()
+ALLEGRO_COLOR Scene::getRandomColor()
 {
 	char r = rand()%250;
 	char g = rand()%250;
 	char b = rand()%250;
 
-	return &al_map_rgb(r,g,b);
+	return al_map_rgb(r,g,b);
 }
 
 _direction Scene::getRandomDirection()
@@ -152,25 +153,26 @@ _velocity Scene::getRandomVelocity()
 	int vX = rand() % maxV + minV;
 	int vY = rand() % maxV + minV;
 
-	_velocity velocity = {vX,vY};
-
+	_velocity velocity = {vX,0.1};
 	return velocity;
 }
 
 void Scene::checkCollisions()
 {
 	std::list<GameObject *> *obj = getObjects(_BALL);
+	ALLEGRO_COLOR corColisao = al_map_rgb(100,250,100);
+	ALLEGRO_COLOR corSemColisao = al_map_rgb(0,100,250);
 	if(obj->size() > 0)
 		for(std::list<GameObject *>::iterator it = obj->begin(); it != obj->end(); ++it)
 		{
 			for(std::list<GameObject *>::iterator it2 = it; it2 != obj->end(); ++it2)
 			{
-				if((*it)->CheckCollisions(*it2))
-				{
-					_direction c_direction = (*it)->getDirection();
-					c_direction.x *= -1;
-					c_direction.y *= -1;
-					(*it)->setDirection(c_direction);
+				if(it != it2){
+					if((*it)->CheckCollisions(*it2))
+					{
+						dynamic_cast<Ball *>(*it)->Collided(*it2);
+						dynamic_cast<Ball *>(*it2)->Collided(*it);
+					}
 				}
 			}
 		}

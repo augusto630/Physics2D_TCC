@@ -27,7 +27,7 @@ private:
 	void KeyRight(void);
 	void KeySpace(void);
 
-	ALLEGRO_COLOR *getRandomColor(void);
+	ALLEGRO_COLOR getRandomColor(void);
 	_direction getRandomDirection(void);
 	_velocity getRandomVelocity(void);
 	void checkCollisions(void);

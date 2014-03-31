@@ -285,7 +285,6 @@ void Core::GameLoop()
 
 		if(event.type == ALLEGRO_EVENT_MOUSE_AXES)
 		{
-			std::cout<<"Move!"<<b_mouse<<std::endl;
 			p_mouse[_MOUSE_MOVE].x = event.mouse.x;
 			p_mouse[_MOUSE_MOVE].y = event.mouse.y;
 

@@ -1,9 +1,8 @@
 #pragma once // one instance
+#include <allegro5\allegro_font.h>
 
 static int SCREEN_H = 480;//Default
 static int SCREEN_W = 640;//Default
-
-
 
 //Underline for every enum created by me
 enum DIRECTION_LEFT_RIGHT{_DIRECTION_LEFT = -1, _DIRECTION_RIGHT = 1};//See GameObject.h: dirX
@@ -25,12 +24,14 @@ struct _velocity
 {
 	float x;
 	float y;
+
 };
 
 struct _direction
 {
 	int x;
 	int y;
+
 };
 
 struct _bound
@@ -43,4 +44,5 @@ struct _size
 {
 	float height;
 	float width;
+
 };

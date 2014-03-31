@@ -1,8 +1,5 @@
 #pragma once
 
-#include "GameObject.h"
-#include "Globals.h"
-
 #include <allegro5\allegro5.h>
 #include <allegro5\allegro_audio.h>
 #include <allegro5\allegro_native_dialog.h>
@@ -12,6 +9,9 @@
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_audio.h>
 #include <allegro5\allegro_acodec.h>
+
+#include "GameObject.h"
+#include "Globals.h"
 
 #include <list>
 
@@ -156,8 +156,8 @@ public:
 	_position getMouseUp_position(void){return p_mouse[_MOUSE_UP];}
 	_position getMouse_position(void){return p_mouse[_MOUSE_MOVE];}
 	MOUSE_BUTTON getMouse_button(void){return b_mouse;}
-	ALLEGRO_FONT *getDefaultFont(void){return font;}
 
+	ALLEGRO_FONT *getDefaultFont(){return font;}
 
 	virtual void Tick(void);
 

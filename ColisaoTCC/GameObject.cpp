@@ -65,7 +65,7 @@ void GameObject::Update()
 void GameObject::Render()
 {}
 
-bool GameObject::CheckCollisions(GameObject *otherObject)
+bool GameObject:: CheckCollisions(GameObject *otherObject)
 {
 	float obj_x = otherObject->getX();
 	float obj_y = otherObject->getY();
@@ -73,10 +73,12 @@ bool GameObject::CheckCollisions(GameObject *otherObject)
 	float obj_bound_x = otherObject->getBoundX();
 	float obj_bound_y = otherObject->getBoundY();
 
-	if(x + boundX > obj_x - obj_bound_x &&
-	   x - boundX < obj_x - obj_bound_x &&
+	if((x + boundX > obj_x - obj_bound_x &&
+	   x - boundX < obj_x + obj_bound_x &&
 	   y + boundY > obj_y - obj_bound_y &&
-	   y - boundY < obj_y - obj_bound_y)
+	   y - boundY < obj_y + obj_bound_y
+	   )
+	   )
 	   return true;
 	else 
 		return false;	 
