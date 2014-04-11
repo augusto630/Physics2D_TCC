@@ -1,8 +1,0 @@
-QuadTree
-ttp://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
-Custom Physics Engine
-http://gamedevelopment.tutsplus.com/tutorials/how-to-create-a-custom-2d-physics-engine-the-core-engine--gamedev-7493
-Impulse Engine Source
-https://github.com/tutsplus/ImpulseEngine
-Ref: 
-http://gamedevelopment.tutsplus.com/tutorials/how-to-create-a-custom-2d-physics-engine-oriented-rigid-bodies--gamedev-8032

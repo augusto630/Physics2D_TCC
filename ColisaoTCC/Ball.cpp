@@ -14,11 +14,11 @@ void Ball::Init(ALLEGRO_BITMAP *image, ALLEGRO_COLOR *color)
 {
 	_position position = {200,200};
 	
-	_velocity velocity = {1,2.5};
-	_direction direction = {0,0};
+	Vector velocity(0,0);
+	Vector acceleration(0,0);
 	_bound bound = {30,30};
 
-	GameObject::Init(position,velocity,direction,bound);
+	GameObject::Init(position,velocity,acceleration,bound);
 
 	setID(_BALL);
 	setAlive(true);
@@ -57,25 +57,27 @@ void Ball::Update()
 	if(x < 0 + boundX)
 	{
 		x = 0 + boundX;
-		dirX *= -1;
+		velocity.x *= -1;
 	}
 	else if(x > SCREEN_W - boundX)
 	{
 		x = SCREEN_W - boundX;
-		dirX *= -1;
+		velocity.x *= -1;
 	}
 
 	if(y < 0 + boundY)
 	{
 		y = 0 + boundY;
-		dirY *= -1;
+		velocity.y *= -1;
 	}
 	else if(y > SCREEN_H - boundY)
 	{
 		y = SCREEN_H - boundY;
-		dirY *= -1;
+		velocity.y *= -1;
 	}
 	
+
+
 	//Stop();
 }
 
@@ -93,7 +95,7 @@ void Ball::Render()
 	{
 		al_draw_filled_rectangle(x-boundX,y-boundY,x+boundX, y+boundY,color);
 
-		/*al_draw_filled_circle(x,y,radius,Ball::color);
+	/*	al_draw_filled_circle(x,y,radius,Ball::color);
 		al_draw_circle(x,y,radius,al_map_rgb(0,0,0),3);
 		if(font)
 			al_draw_textf(font,al_map_rgb(0,0,0),x,y,0,"B %i",index);*/
@@ -102,26 +104,47 @@ void Ball::Render()
 
 void Ball::MoveUp()
 {
-	dirY = _DIRECTION_UP;
+	if(velocity.y > 0)
+		velocity.y *= -1;
+	//velocity = _DIRECTION_UP;
 }
 void Ball::MoveDown()
 {
-	dirY = _DIRECTION_DOWN;
+	if(velocity.y < 0)
+		velocity.y *= -1;
+	/*dirY = _DIRECTION_DOWN;*/
 }
 void Ball::MoveLeft()
 {
-	dirX = _DIRECTION_LEFT;
+	if(velocity.x > 0) 
+		velocity.x *= -1;
+
+	//dirX = _DIRECTION_LEFT;
 }
 void Ball::MoveRight()
 {
-	dirX = _DIRECTION_RIGHT;
+	if(velocity.x < 0) 
+		velocity.x *= -1;
+	//dirX = _DIRECTION_RIGHT;
 }
 
 void Ball::Stop()
 {
-	dirX = _DIRECTION_NONE;
-	dirY = _DIRECTION_NONE;
+	//dirX = _DIRECTION_NONE;
+	//dirY = _DIRECTION_NONE;
 }
+
+bool Ball:: CheckCollisions(Ball *otherObject)
+{
+	if(GameObject::CheckCollisions(otherObject))
+	{
+		Collided(otherObject);
+		return true;
+	}
+	return false;
+}
+
+
 void Ball::Collided(GameObject *collidedObject)
 {
 	GameObject::Collided(collidedObject->getID());
@@ -131,105 +154,150 @@ void Ball::Collided(GameObject *collidedObject)
 	if(collidedObject->getID() == _BALL)
 	{
 
-		color = al_map_rgb(100,0,250);//DO SOMETHING == other balls in the simulation
+		//color = al_map_rgb(100,0,250);//DO SOMETHING == other balls in the simulation
 
-		double vX,vY,vX_Object,vY_Object,vRx,vRy,vRx_Object,vRy_Object,mod,mod_Object,modR,modR_Object;
-		double mass_object = dynamic_cast<Ball *>(collidedObject)->getMass();
-		double theta,theta_Object;
+		//double vX,vY,vX_Object,vY_Object,vRx,vRy,vRx_Object,vRy_Object,mod,mod_Object,modR,modR_Object;
+		//double mB = dynamic_cast<Ball *>(collidedObject)->getMass();
+		//double mA = mass;
+		//double theta,theta_Object;
+
+		//float Al,Ar,Au,Ad;
+		//float Bl,Br,Bu,Bd;
+
+		//Al = x - boundX;
+		//Ar = x + boundX;
+		//Au = y + boundY;
+		//Ad = y - boundY;
+
+		//Bl = collidedObject->getX() - collidedObject->getBoundX();
+		//Br = collidedObject->getX() + collidedObject->getBoundX();
+		//Bu = collidedObject->getY() + collidedObject->getBoundY();
+		//Bd = collidedObject->getY() - collidedObject->getBoundY();
+
+		//float pAx = (Al - Br) > 0? (Al - Br)/2: (Ar - Bl)/2 ; 
+		//float pAy = (Ad - Bu) > 0? (Ad - Bu)/2: (Au - Bd)/2 ;
+
+		//pAx -= boundX;
+		//pAy -= boundY;
+
+		//float pBx = (Bl - Ar) > 0? (Bl - Ar)/2: (Br - Al)/2 ;
+		//float pBy = (Bd - Au) > 0? (Bd - Bu)/2: (Bu - Bd)/2 ;
+
+		//pBx -= collidedObject->getBoundX();
+		//pBy -= collidedObject->getBoundY();
+
+		//Vector vA = getVelocityR();
+		//Vector vB = collidedObject->getVelocityR();
+
+		//Vector n(vB.x - vA.x,vB.y-vA.y);
+
+
+		//Vector un;
+		//un = n/Magnitude(n);
+
+		//Vector ut(-un.y,un.x);
+
+		//float vAn = Dot(un,vA);
+		//float vAt = Dot(ut,vA);
+
+		//float vBn = Dot(un,vB);
+		//float vBt = Dot(ut,vB);
+
+		//float vlAt = vAt;
+		//float vlBt = vBt;
+
+		//float vlAn = ( vAn*(mA - mB) + (2*mB*vBn) ) / ( mA + mB );
+		//float vlBn = ( vBn*(mB - mA) + (2*mA*vAn) ) / ( mA + mB );
+
+		//Vector lAn = un*vlAn;
+		//Vector lAt = ut*vlAt;
+		//
+		//Vector lBn = un*vlBn;
+		//Vector lBt = ut*vlBt;
+
+		//Vector lA = lAn + lAt;
+		//Vector lB = lBn + lBt;		
+
+		//velocity = lA;
+		//collidedObject->setVelocity(lB);
+
+		//x += pAx;
+		//y += pAy;
+
+		//collidedObject->setX(collidedObject->getX() + pBx);
+		//collidedObject->setY(collidedObject->getY() + pBy);
+	/*	x += lA.x;
+		y += lA.y;
+
+		collidedObject->setX(collidedObject->getX() + lB.x);
+		collidedObject->setY(collidedObject->getY() + lB.y);*/
+
+		/*normal.Normalize();
+
+		float velAlongNorm = Dot(ab,normal);
+
+
+		if(velAlongNorm <= 0)
+		{
+
+			float e = 0;
+
+			float j = (1 + e) * velAlongNorm;
+			j /= 1 / mass + 1 / mass_object;
+
+			Vector impulse = j * normal;
+
+			vA -= 1 / mass * impulse;
+			vB += 1 / mass_object * impulse;
+
+			velocity = vA;
+
+			collidedObject->setVelocity(vB);
+
+		}
+
+
+
 		
-		vX = velX;
-		vY = velY;
+		//vX = velX;
+		//vY = velY;
 
-		/*vX_Object = collidedObject->getVelocity().x + collidedObject->getX();
-		vY_Object = collidedObject->getVelocity().y + collidedObject->getY();*/
-		vX_Object = collidedObject->getVelocity().x;
-		vY_Object = collidedObject->getVelocity().y;
+		///*vX_Object = collidedObject->getVelocity().x + collidedObject->getX();
+		//vY_Object = collidedObject->getVelocity().y + collidedObject->getY();*/
+		//vX_Object = collidedObject->getVelocity().x;
+		//vY_Object = collidedObject->getVelocity().y;
 
-		mod = sqrt(pow(vX,2)+pow(vY,2));
+		//mod = sqrt(pow(vX,2)+pow(vY,2));
 
-		theta = vX/vY;
-		theta = pow(tan(theta),-1);
+		//theta = vX/vY;
+		//theta = pow(tan(theta),-1);
 
-		mod_Object = sqrt(pow(vX_Object,2)+pow(vY_Object,2));
+		//mod_Object = sqrt(pow(vX_Object,2)+pow(vY_Object,2));
 
-		theta_Object = vX_Object/vY_Object;
-		theta_Object = pow(tan(theta_Object),-1);
+		//theta_Object = vX_Object/vY_Object;
+		//theta_Object = pow(tan(theta_Object),-1);
 
-		modR = (mass - mass_object)/(mass+mass_object);
-		modR = modR * mod;
-		modR = modR + (((2*mass_object)/(mass+mass_object))*mod_Object);
+		//modR = (mass - mass_object)/(mass+mass_object);
+		//modR = modR * mod;
+		//modR = modR + (((2*mass_object)/(mass+mass_object))*mod_Object);
 
-		modR_Object = ((2*mass_object)/(mass + mass_object)) * mod;
-		modR_Object = ((mass_object - mass)/(mass + mass_object))*mod_Object;
-
-
-		vX = modR * cos(theta);
-		vY = modR * sin(theta);
-
-		vX_Object = modR_Object * cos(theta_Object);
-		vY_Object = modR_Object * sin(theta_Object);
+		//modR_Object = ((2*mass_object)/(mass + mass_object)) * mod;
+		//modR_Object = ((mass_object - mass)/(mass + mass_object))*mod_Object;
 
 
-		_velocity vR_object = {vX_Object,vY_Object};
-		//collidedObject->setVelocity(vR_object);
+		//vX = modR * cos(theta);
+		//vY = modR * sin(theta);
 
-		velX = vX;
-		velY = vY;
-
-		float obj_y = collidedObject->getY();
-		float obj_x = collidedObject->getX();
-
-		float obj_bound_x = collidedObject->getBoundX();
-		float obj_bound_y = collidedObject->getBoundY();
-
-		if(y+boundY > obj_y - obj_bound_y)
-			y += (obj_y - obj_bound_y) - (y+boundY);
-		if(y-boundY < obj_y + obj_bound_y)
-			y = (obj_y + obj_bound_y) -sdfgdsdfgdsfg;
-
-		if(x+boundX > obj_x - obj_bound_x)
-			x = obj_x - obj_bound_x - 1;
-		if(x-boundX < obj_bound_x + obj_bound_x)
-			x = obj_x + obj_bound_x + 1;
-		
-		/*float obj_x = collidedObject->getX();
-		float obj_y = collidedObject->getY();
-
-		float r = 0;
-
-		float obj_bound_x = collidedObject->getBoundX();
-		float obj_bound_y = collidedObject->getBoundY();
+		//vX_Object = modR_Object * cos(theta_Object);
+		//vY_Object = modR_Object * sin(theta_Object);
 
 
-		float a1,a2,a3,a4;
-		float b1,b2,b3,b4;
+		//_velocity vR_object = {vX_Object,vY_Object};
+		////collidedObject->setVelocity(vR_object);
 
-		a1 = (x-boundX) + (y-boundY);
-		a2 = (x-boundX) + (y+boundY);
-		a3 = (x+boundX) + (y+boundY);
-		a4 = (x+boundX) + (y-boundY);
+		//velX = vX;
+		//velY = vY;
 
-		b1 = (obj_x-obj_bound_x) + (obj_y-obj_bound_y);
-		b2 = (obj_x-obj_bound_x) + (obj_y+obj_bound_y);
-		b3 = (obj_x+obj_bound_x) + (obj_y+obj_bound_y);
-		b4 = (obj_x+obj_bound_x) + (obj_y-obj_bound_y);
-
-
-		if(a3 > b1 || a3 > b2 || a3 > b3 || a3 > b4 
-		 ||a4 > b1 || a4 > b2 || a4 > b3 || a4 > b4){
-			x += (obj_x - obj_bound_x) - (x + boundX);
-		}*/
-		
-
-
-
-	/*	_velocity velRes_Object = collidedObject->getVelocity();
-
-		velRes_Object.x *-1;
-		velRes_Object.y *-1;
-
-
-		collidedObject->setVelocity(velRes_Object);*/
 	}
 }
 

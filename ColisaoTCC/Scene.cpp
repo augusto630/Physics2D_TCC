@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+
 int Scene::Init()
 {
 	Core::Init();
@@ -19,21 +20,17 @@ void Scene::Tick(void)
 	if(l_object && Scene::getMouse_button() == _MOUSE_RIGHT)
 	{
 		l_object->setX(Scene::getMouse_position().x);
-		l_object->setY(Scene::getMouse_position().y);		
+		l_object->setY(Scene::getMouse_position().y);
+		l_object->resetForces();
+		
 	}
 
-	checkCollisions();
+	//checkCollisions();
 
 }
 
 
 void Scene::MouseDown(void)
-{
-
-
-}
-
-void Scene::MouseUp(void)
 {
 	if(Scene::getMouse_button() == _MOUSE_LEFT){
 		if(ballCount >= 100)
@@ -49,10 +46,20 @@ void Scene::MouseUp(void)
 			ball->setX(Scene::getMouse_position().x);
 			ball->setY(Scene::getMouse_position().y);
 			ball->setColor(getRandomColor());
-			ball->setDirection(getRandomDirection());
-			ball->setVelocity(getRandomVelocity());
-			ball->setDirection(getRandomDirection());
-			ball->setMass(rand()%5);
+			ball->setAtrict(0);
+
+			Vector gravity(0,30);
+			
+			ball->addStaticForce(gravity);
+
+			ball->addForce(Vector(0.5,0));
+
+
+			//ball->addForce(Vector(3,-8));
+
+			//ball->setVelocity(getRandomVelocity());
+
+			ball->setMass(2);
 
 			ballCount ++;
 
@@ -61,6 +68,43 @@ void Scene::MouseUp(void)
 			l_object = ball;
 		}
 	}
+
+}
+
+void Scene::MouseUp(void)
+{
+	//if(Scene::getMouse_button() == _MOUSE_LEFT){
+	//	if(ballCount >= 100)
+	//	{
+	//		Scene::popObject();
+	//		ballCount --;
+	//	}
+
+	//	if(rand() % 1 == 0){
+	//		Ball *ball = new Ball();
+	//		ball->Init();
+	//		ball->setFont(Scene::getDefaultFont());
+	//		ball->setX(Scene::getMouse_position().x);
+	//		ball->setY(Scene::getMouse_position().y);
+	//		ball->setColor(getRandomColor());
+	//		ball->setAtrict(0.03);
+
+	//		Vector gravity(0,15);
+	//		
+	//		ball->addStaticForce(gravity);
+	//		//ball->addForce(Vector(3,-6));
+
+	//		//ball->setVelocity(getRandomVelocity());
+
+	//		ball->setMass(rand()%5);
+
+	//		ballCount ++;
+
+	//		addObject(ball);
+
+	//		l_object = ball;
+	//	}
+	//}
 }
 
 void Scene::MouseMove(void)
@@ -159,23 +203,22 @@ _velocity Scene::getRandomVelocity()
 
 void Scene::checkCollisions()
 {
-	std::list<GameObject *> *obj = getObjects(_BALL);
-	ALLEGRO_COLOR corColisao = al_map_rgb(100,250,100);
-	ALLEGRO_COLOR corSemColisao = al_map_rgb(0,100,250);
-	if(obj->size() > 0)
-		for(std::list<GameObject *>::iterator it = obj->begin(); it != obj->end(); ++it)
-		{
-			for(std::list<GameObject *>::iterator it2 = it; it2 != obj->end(); ++it2)
-			{
-				if(it != it2){
-					if((*it)->CheckCollisions(*it2))
-					{
-						dynamic_cast<Ball *>(*it)->Collided(*it2);
-						dynamic_cast<Ball *>(*it2)->Collided(*it);
-					}
-				}
-			}
-		}
+	//std::list<GameObject *> *obj = getObjects(_BALL);
+	//ALLEGRO_COLOR corColisao = al_map_rgb(100,250,100);
+	//ALLEGRO_COLOR corSemColisao = al_map_rgb(0,100,250);
+	//if(obj->size() > 0)
+	//	for(std::list<GameObject *>::iterator it = obj->begin(); it != obj->end(); ++it)
+	//	{
+	//		for(std::list<GameObject *>::iterator it2 = it; it2 != obj->end(); ++it2)
+	//		{
+	//			if(it != it2){
+	//				if(dynamic_cast<Ball *>(*it)->CheckCollisions(dynamic_cast<Ball *>(*it2)))
+	//				{
+	//					//dynamic_cast<Ball *>(*it)->Collided(*it2);
+	//				}
+	//			}
+	//		}
+	//	}
 }
 
 

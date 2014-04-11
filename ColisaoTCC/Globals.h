@@ -1,8 +1,10 @@
 #pragma once // one instance
 #include <allegro5\allegro_font.h>
+#include "Vector.h"
 
-static int SCREEN_H = 480;//Default
-static int SCREEN_W = 640;//Default
+static int SCREEN_H = 600;//Default
+static int SCREEN_W = 1300;//Default
+static int gFPS = 60;
 
 //Underline for every enum created by me
 enum DIRECTION_LEFT_RIGHT{_DIRECTION_LEFT = -1, _DIRECTION_RIGHT = 1};//See GameObject.h: dirX
@@ -13,6 +15,7 @@ enum STATE{_TITLE,_PLAYING,_LOST};
 enum KEYS{_KEY_UP,_KEY_DOWN,_KEY_LEFT,_KEY_RIGHT,_KEY_SPACE};//keyboard keys maybe add a action key as well
 enum MOUSE{_MOUSE_DOWN = 0,_MOUSE_UP = 1, _MOUSE_MOVE = 2};
 enum MOUSE_BUTTON{_MOUSE_LEFT = 0,_MOUSE_RIGHT = 1, _MOUSE_BUTTON_NONE_OTHER = 2};//may add middle button, scroll button, etc..
+
 
 struct _position
 {

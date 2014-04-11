@@ -16,14 +16,16 @@ private:
 protected:
 	float x;
 	float y;
+	float mass;
 
-	float velX;
-	float velY;
+	Vector acceleration;
+	Vector velocity;
+	Vector velocityI;
+	Vector staticForce;
+	Vector dynamicForce;
+	Vector momentum;
 
-	float gravity;
-
-	int dirX;// Right = +1| Left = -1 | None = 0
-	int dirY;// Up = -1 | Down = +1 | None = 0
+	float const_atrict;
 
 	int boundX;
 	int boundY;
@@ -45,31 +47,36 @@ public:
 	GameObject();
 	void virtual Destroy();
 
-	void Init(_position position, _velocity velocity, _direction direction, _bound bound, float gravity = 0);
+	void Init(_position position, Vector velocity,Vector acceleration, _bound bound);
 	void virtual Update();
 	void virtual Render();
 
 	float getX(){return x;}
 	float getY(){return y;}
 
+	void setMass(float mass){GameObject::mass = mass;};
+	float getMass(){return GameObject::mass;};
+
 	void setX(float x){GameObject::x = x;}
 	void setY(float y){GameObject::y = y;}
 
-	void setVelocity(_velocity velocity){GameObject::velX = velocity.x; GameObject::velY = velocity.y;}
-	_velocity getVelocity()
-	{
-		_velocity velocity = {GameObject::velX,GameObject::velY};
-		return velocity;
-	}
+	void setVelocity(Vector velocity){GameObject::velocity = velocity; GameObject::velocityI = velocity;}
+	Vector *getVelocity(){return  &velocity;}
 
-	void setGravity(float gravity){GameObject::gravity = gravity;}
-	void setDirection(_direction direction){GameObject::dirX = direction.x; GameObject::dirY = direction.y;}
+	Vector getVelocityR();
 
-	_direction getDirection(void)
-	{
-		_direction direction = {GameObject::dirX,GameObject::dirY};
-		return direction;
-	}
+	void addForce(Vector force){GameObject::dynamicForce += force;}
+	void setForce(Vector force){GameObject::dynamicForce = force;}
+
+	void addStaticForce(Vector force){GameObject::staticForce += force;}
+
+	void setAtrict(float atrict){const_atrict = atrict;}
+	float getAtrict(){return const_atrict;}
+
+	Vector *getDynamicForce(){return &dynamicForce;}
+	Vector *getStaticForce(){return &staticForce;}
+
+	void resetForces(){velocity = velocityI;dynamicForce.Set(0,0);};
 
 	int getBoundX(){return boundX;}
 	int getBoundY(){return boundY;}
@@ -83,7 +90,7 @@ public:
 	bool getCollidable(){return collidable;}
 	void setCollidable(bool collidable){GameObject::collidable = collidable;}
 
-	bool CheckCollisions(GameObject *otherObject);
+	bool virtual CheckCollisions(GameObject *otherObject);
 	void virtual Collided(int objectID);
 	bool isCollidable();//is alive and is collidable
 };

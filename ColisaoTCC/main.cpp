@@ -1,7 +1,11 @@
 #include "main.h"
+#include "Box2DeX.cpp"
 
 int main(void)
 {
+	//Box2DeX b = Box2DeX();
+	//b.start(0,NULL);
+
 	
 	Scene *cena = new Scene();
 
@@ -28,3 +32,4 @@ int main(void)
 
 
 }
+

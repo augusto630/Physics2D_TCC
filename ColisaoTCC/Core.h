@@ -69,8 +69,18 @@ protected:
 			redraw = false;
 			int ob = 0;
 
-			for(std::list<GameObject *>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
-				(*iter)->Render();//Renderizar todos os objetos
+			for(std::list<GameObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+			{
+				/*for(std::list<GameObject *>::iterator it2 = it; it2 != objects.end(); ++it2)
+				{
+					if(it != it2){
+						(*it)->CheckCollisions(*it2);
+					}
+				}*/
+
+
+				(*it)->Render();//Renderizar todos os objetos
+			}
 
 			al_set_target_backbuffer(display);//retorna para o display os proximos draw
 			al_clear_to_color(al_map_rgb(0,0,0));//limpa o display (ou o que estiver na target)		

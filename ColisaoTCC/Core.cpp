@@ -331,6 +331,17 @@ void Core::GameLoop()
 				if(*iter)
 					(*iter)->Update();
 
+
+			for(std::list<GameObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+			{
+				for(std::list<GameObject *>::iterator it2 = it; it2 != objects.end(); ++it2)
+				{
+					if(it != it2){
+						(*it)->CheckCollisions(*it2);
+					}
+				}
+			}
+
 			redraw = true;
 		}
 		#pragma endregion Timer/Draw

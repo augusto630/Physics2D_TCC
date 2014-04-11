@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Globals.h"
+
 #include "Core.h"
 
 #include "Ball.h"
