@@ -1,0 +1,164 @@
+﻿\documentclass[12pt,a4paper,oneside]{book} %{livro} para o livro é necessário alterar o arquivo fonte
+
+\usepackage[brazilian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{indentfirst}
+\usepackage[ansinew]{inputenc} 
+\usepackage{amsmath,amssymb,amsfonts,array,graphicx}
+\usepackage{appendix}
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{lipsum}
+\usepackage{epstopdf} %incluindo .eps para compilar em latex
+
+
+
+
+\usepackage{color}
+	\definecolor{UELSymbol}{cmyk}{1,0,1,0.2}
+	\definecolor{UNIFILSymbol}{cmyk}{0,0.425,0.845,0.012}
+	\definecolor{citecollor}{cmyk}{1,0,0,0}%para internet
+	\definecolor{filecollor}{cmyk}{1,1,1,0}
+	\definecolor{linkcollor}{rgb}{0,0,1}
+	\definecolor{urlcollor}{rgb}{0.2,0.2,1}
+	\definecolor{white}{rgb}{1,1,1} %para a página do apêndice e página em branco
+
+%\definecolor{citecollor}{rgb}{0,0,0} %para impressão
+%	\definecolor{filecollor}{rgb}{0,0,0}
+%	\definecolor{linkcollor}{rgb}{0,0,0}
+%	\definecolor{urlcollor}{rgb}{0,0,0}
+	
+
+%\usepackage[square,comma,numbers,super,compress]{natbib} 
+\usepackage[square,comma,numbers,compress]{natbib} 
+
+
+\usepackage[pdftex]{hyperref}
+	\hypersetup{
+							colorlinks=true,
+							citecolor=citecollor,
+							filecolor=filecollor,
+							linkcolor=linkcollor,
+							urlcolor=urlcollor,
+							pageanchor=false}
+
+
+\usepackage[font=small,labelfont=bf,labelsep=endash,skip=3pt,figurename=Figura,tablename=Tabela]{caption}
+%	\captionsetup[table]{singlelinecheck=false}
+	\captionsetup[figure]{justification=centerlast,singlelinecheck=true}
+
+
+\usepackage[font=small]{subcaption}
+		\captionsetup{subrefformat=parens}
+			
+\usepackage[final]{pdfpages}
+
+\usepackage{setspace} 		
+	\onehalfspacing 
+
+\renewcommand{\arraystretch}{1.0} 
+
+\setlength{\parindent}{3cm} 
+\usepackage[includehead=true, top=2.0cm, left=3.0cm, bottom=2.0cm, right=2.0cm]{geometry} 
+
+\setlength{\headheight}{15pt}
+																																													
+\begin{document}
+
+
+\newcommand{\Nn}{\textbf{n}}
+\newcommand{\aA}{\textbf{A}}
+\newcommand{\bB}{\textbf{B}}
+\newcommand{\Xx}{\textbf{x}}
+\newcommand{\Yy}{\textbf{y}}
+\newcommand{\Rr}{\textbf{r}}
+\newcommand{\opc}{\mathbb{C}}
+\newcommand{\opo}{\mathbb{O}}
+\newcommand{\ops}{\mathbb{S}}
+\newcommand{\opa}{\mathbb{A}}
+\newcommand{\opt}{\mathbb{T}}
+
+
+\newcommand{\ud}{\mathrm{d}}
+ \newcommand{\sen}{\mathrm{sen\:}}	
+  \newcommand{\degree}{\ensuremath{^\circ}}
+
+\hyphenation{e-xem-plo} 
+\hyphenation{trans-for-ma-se}
+\hyphenation{a-poia-ram}
+\hyphenation{cur-va-tu-ra}
+
+
+
+
+\frontmatter
+\pagenumbering{arabic}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtocontents{toc}{\protect\thispagestyle{empty}} 
+\addtocontents{lof}{\protect\thispagestyle{empty}} 
+\addtocontents{lot}{\protect\thispagestyle{empty}} 
+
+\include{Pretexto}
+
+
+\mainmatter
+
+%\newcommand\nomecapitulo{}
+%\renewcommand\chaptermark[1]{\renewcommand\nomecapitulo{#1}}
+
+\fancypagestyle{plain}{
+\fancyhf{} 
+%\lhead{\nomecapitulo}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+
+\pagestyle{plain}
+
+\setcounter{page}{14} 
+
+\include{Introducao}
+\include{Capitulo_1}
+\include{Capitulo_2}
+\include{Capitulo_3}
+\include{Capitulo_4}
+\include{Capitulo_5}
+%\include{Capitulo_6}
+\include{Conclusao}
+
+\cleardoublepage
+\phantomsection
+\include{References}
+
+\cleardoublepage
+\phantomsection
+\appendix
+\addcontentsline{toc}{chapter}{APÊNDICES}
+\chapter*{Apêndices}
+\cleardoublepage
+
+%\include{A_DataInformation}
+\include{Apendice_A}
+\include{Apendice_B}
+
+\backmatter
+%\include{C_Anexos} %deixei como exemplo exatamente como usei. Note que sai certinho no sumário.
+
+\thispagestyle{empty}
+\begin{center}
+{\color{white} Minha página em branco} %contracapa
+\end{center}
+
+
+\end{document}

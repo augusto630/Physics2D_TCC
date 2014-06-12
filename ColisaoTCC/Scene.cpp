@@ -7,6 +7,8 @@ int Scene::Init()
 	Scene::ballCount = 0;
 	srand(time(NULL));
 
+
+
 	return 0;
 }
 
@@ -33,38 +35,52 @@ void Scene::Tick(void)
 void Scene::MouseDown(void)
 {
 	if(Scene::getMouse_button() == _MOUSE_LEFT){
-		if(ballCount >= 100)
+		/*if(ballCount >= 1000)
 		{
 			Scene::popObject();
 			ballCount --;
-		}
 
+		}*/
+		//for(int i=0; i < 10; i++)
 		if(rand() % 1 == 0){
+			float mass = rand() % 1000 + 1;
+			//float mass = 1;
 			Ball *ball = new Ball();
 			ball->Init();
 			ball->setFont(Scene::getDefaultFont());
 			ball->setX(Scene::getMouse_position().x);
 			ball->setY(Scene::getMouse_position().y);
-			ball->setColor(getRandomColor());
-			ball->setAtrict(0);
+			//ball->setColor(getRandomColor());
 
-			Vector gravity(0,30);
+			ALLEGRO_COLOR cor;
+
+			//if(mass > 1)
+				cor = al_map_rgb(4*mass,10*mass,25*mass);
+			//else
+			//	cor = al_map_rgb(100*mass,0,0);
+
+			ball->setColor(cor);
+			//ball->setAtrict(0.1);
+
+			Vector gravity(0,30);//30 é bom
 			
-			ball->addStaticForce(gravity);
+			//ball->addStaticForce(gravity);
 
-			ball->addForce(Vector(0.5,0));
+		//	ball->addForce(Vector(rand()%1+1,rand()%1+1));
+
+			ball->addForce(Vector(0.1,0.1));
+			
 
 
 			//ball->addForce(Vector(3,-8));
 
 			//ball->setVelocity(getRandomVelocity());
 
-			ball->setMass(2);
+			ball->setMass(mass);
 
 			ballCount ++;
 
 			addObject(ball);
-
 			l_object = ball;
 		}
 	}

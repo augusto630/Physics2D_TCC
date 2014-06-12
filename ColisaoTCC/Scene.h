@@ -16,6 +16,7 @@ private:
 	ALLEGRO_BITMAP *ballBitmap;
 	GameObject *l_object;
 
+
 	void Tick(void);
 
 	void MouseDown(void);

@@ -25,6 +25,9 @@ protected:
 	Vector dynamicForce;
 	Vector momentum;
 
+	bool correcao;
+	Vector vCorrecao;
+
 	float const_atrict;
 
 	int boundX;
@@ -50,7 +53,7 @@ public:
 	void Init(_position position, Vector velocity,Vector acceleration, _bound bound);
 	void virtual Update();
 	void virtual Render();
-
+ 
 	float getX(){return x;}
 	float getY(){return y;}
 
@@ -59,6 +62,12 @@ public:
 
 	void setX(float x){GameObject::x = x;}
 	void setY(float y){GameObject::y = y;}
+
+	void setCorrecao(bool valor){ GameObject::correcao = valor;}
+	bool getCorrecao(){ return GameObject::correcao;}
+
+	void setVCorrecao(Vector valor){ GameObject::vCorrecao = valor;}
+	Vector getVCorrecao(){ return GameObject::vCorrecao;}
 
 	void setVelocity(Vector velocity){GameObject::velocity = velocity; GameObject::velocityI = velocity;}
 	Vector *getVelocity(){return  &velocity;}

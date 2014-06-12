@@ -13,6 +13,9 @@
 #include "GameObject.h"
 #include "Globals.h"
 
+#include "QuadTree.h"
+
+
 #include <list>
 
 
@@ -44,7 +47,26 @@ private:
 	int gameFPS;
 	int soundSamples;
 
+	int maxFPS;
+	int minFPS;
+	long loopCount;
+	long loopCountC;
+	long controlTimeLoopCount;
+	Quadtree qTree;
+
+
 	int Allegro_Init();
+
+
+
+
+
+	int fps1;
+	int frames_done;
+	int old_time;
+ 
+	int frames_array[10];//an array to store the number of frames we did during the last 10 tenths of a second
+	int frame_index;//used to store the index of the last updated value in the array
 
 	
 protected:
@@ -53,6 +75,7 @@ protected:
 	void Destr();
 	int UpdateDisplay(ALLEGRO_EVENT event, bool redraw)
 	{
+
 		/*bool redraw = false;
 		if(event.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
@@ -92,12 +115,54 @@ protected:
 			al_flip_display();//atualiza o display
 			//limparBitmap(buffer);
 
+
+			frames_done++;
+			if(al_get_time() - controlTimeLoopCount >= 1){
+				loopCountC = loopCount;
+				loopCount = 0;
+				controlTimeLoopCount = al_get_time();
+			}
 		}
+
+
+	 //   if(al_current_time() >= old_time -3)//i.e. a 0.1 second has passed since we last counted the frames
+		//{
+		//	fps1 -= frames_array[frame_index];//decrement the fps by the frames done a second ago
+		//	frames_array[frame_index] = frames_done;//store the number of frames done this 0.1 second
+		//	fps1 += frames_done;//increment the fps by the newly done frames
+ 
+		//	frame_index = (frame_index + 1) % 3;//increment the frame index and snap it to 10
+ 
+		//	frames_done = 0;
+		//	old_time += 1;
+		//}
+		if(al_current_time() - old_time >= 1)//i.e. a second has passed since we last measured the frame rate
+		{
+			fps1 = frames_done;
+			//fps now holds the the number of frames done in the last second
+			//you can now output it using textout_ex et al.
+ 
+			//reset for the next second
+			frames_done = 0;
+			old_time = al_current_time();
+			if(fps1 < minFPS) minFPS = fps1;
+			if(fps1 > maxFPS) maxFPS = fps1;
+		}
+
+
 
 		al_set_target_bitmap(buffer);
 
+
+		//al_draw_textf(font,al_map_rgb(255,255,255),0,0,0,"FPS %d",fps1);
+
+	 
+
+
 		return 0;
 	};
+
+
 	void limparBitmap(ALLEGRO_BITMAP *bitmap)
 	{
 		ALLEGRO_BITMAP *btmAtual = al_get_target_bitmap();
@@ -108,21 +173,40 @@ protected:
 	};
 	int getFPS()
 	{
-		double t = al_get_time();
-		double refreshRate = 10;//2 hz
+		//double t = al_get_time();
+		//double refreshRate = 60;//2 hz
 
-		frames++;
-		if (t - gameTime >= 1/refreshRate) {
-			gameFPS = frames;		
-			frames = 0;
-			gameTime = al_current_time();
-		}
-		return gameFPS * refreshRate;
+		//frames++;
+		//if (t - gameTime >= 1/refreshRate) {
+		//	gameFPS = frames;		
+		//	frames = 0;
+		//	gameTime = al_current_time();
+
+		//	if((gameFPS * refreshRate) < minFPS) minFPS = gameFPS * refreshRate;
+		//	if((gameFPS * refreshRate) > maxFPS) maxFPS = gameFPS * refreshRate;
+
+		//}
+		//return gameFPS * refreshRate;
+
+
+
+
+		return fps1;
+
+
 	};
 	void drawFPS(void)
 	{
-		if(Core::isDrawFPS)
-			al_draw_textf(font,al_map_rgb(255,255,255),0,0,0,"FPS %d",Core::getFPS());
+
+		if(Core::isDrawFPS){
+			//al_draw_textf(font,al_map_rgb(255,255,255),0,0,0,"FPS %d",fps1);
+		    al_draw_textf(font,al_map_rgb(255,255,255),0,0,0,"FPS %d",fps1);
+			al_draw_textf(font,al_map_rgb(255,255,255),0,10,0,"Min FPS %d",minFPS);
+			al_draw_textf(font,al_map_rgb(255,255,255),0,20,0,"Max FPS %d",maxFPS);
+			al_draw_textf(font,al_map_rgb(255,255,255),0,30,0,"Qtd Obj %d",objects.size());
+			al_draw_textf(font,al_map_rgb(255,255,255),0,40,0,"Loop CTrl %d",loopCountC);
+			
+		}
 	};
 	ALLEGRO_DISPLAY *createDisplay(void)
 {

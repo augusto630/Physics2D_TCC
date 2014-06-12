@@ -83,7 +83,9 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="GradeUniforme.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
@@ -92,7 +94,9 @@
     <ClCompile Include="Box2DeX.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GradeUniforme.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>

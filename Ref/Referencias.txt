@@ -8,3 +8,9 @@ Ref:
 http://gamedevelopment.tutsplus.com/tutorials/how-to-create-a-custom-2d-physics-engine-oriented-rigid-bodies--gamedev-8032
 
 http://www.vobarian.com/collisions/
+
+http://www.metanetsoftware.com/technique/tutorialA.html
+
+
+tipler
+sears 

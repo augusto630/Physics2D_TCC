@@ -16,7 +16,7 @@ void Ball::Init(ALLEGRO_BITMAP *image, ALLEGRO_COLOR *color)
 	
 	Vector velocity(0,0);
 	Vector acceleration(0,0);
-	_bound bound = {30,30};
+	_bound bound = {5,5};
 
 	GameObject::Init(position,velocity,acceleration,bound);
 
@@ -94,6 +94,7 @@ void Ball::Render()
 	else
 	{
 		al_draw_filled_rectangle(x-boundX,y-boundY,x+boundX, y+boundY,color);
+		al_draw_line(x,y,(x+velocity.x*5), (y+velocity.y*5), al_map_rgb(50,70,80), 1);//AQUI!!!!
 
 	/*	al_draw_filled_circle(x,y,radius,Ball::color);
 		al_draw_circle(x,y,radius,al_map_rgb(0,0,0),3);
@@ -153,7 +154,7 @@ void Ball::Collided(GameObject *collidedObject)
 		;//DO SOMETHING obstacle == border limit
 	if(collidedObject->getID() == _BALL)
 	{
-
+		
 		//color = al_map_rgb(100,0,250);//DO SOMETHING == other balls in the simulation
 
 		//double vX,vY,vX_Object,vY_Object,vRx,vRy,vRx_Object,vRy_Object,mod,mod_Object,modR,modR_Object;

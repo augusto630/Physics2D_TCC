@@ -45,6 +45,12 @@
     <ClInclude Include="Vector.h">
       <Filter>Core\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GradeUniforme.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">
@@ -66,6 +72,12 @@
       <Filter>Core\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Box2DeX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GradeUniforme.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

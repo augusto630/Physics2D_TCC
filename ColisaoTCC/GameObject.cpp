@@ -53,6 +53,14 @@ Vector GameObject::getVelocityR()
 	return vR;
 }
 
+float modulo(float valor)
+{
+	if(valor < 0)
+		return valor * -1;
+	else
+		return valor;
+}
+
 void GameObject::Update()
 {
 	float vX;
@@ -114,10 +122,12 @@ void GameObject::Update()
 	if(dynamicForce.y <= sec && dynamicForce.y >= -sec)
 		dynamicForce.y = 0;
 
-
+	if(modulo(vR.x) < 0.1) vR.x = 0;
+	if(modulo(vR.y) < 0.1) vR.y = 0;
 	x += vR.x;
 	y += vR.y;
 }
+
 
 void GameObject::Render()
 {
@@ -139,9 +149,13 @@ bool GameObject:: CheckCollisions(GameObject *otherObject)
 	   y - boundY < obj_y + obj_bound_y
 	   )
 	   ){
+		   bool xNull = velocity.x == 0;
+		   bool yNull = velocity.y == 0;
+		   bool xBNull = otherObject->getVelocityR().x == 0;
+		   bool yBNull =  otherObject->getVelocityR().y == 0;
 
 
-		   double vX,vY,vX_Object,vY_Object,vRx,vRy,vRx_Object,vRy_Object,mod,mod_Object,modR,modR_Object;
+		double vX,vY,vX_Object,vY_Object,vRx,vRy,vRx_Object,vRy_Object,mod,mod_Object,modR,modR_Object;
 		double mB = otherObject->getMass();
 		double mA = mass;
 		double theta,theta_Object;
@@ -209,8 +223,107 @@ bool GameObject:: CheckCollisions(GameObject *otherObject)
 		Vector lA = lAn + lAt;
 		Vector lB = lBn + lBt;		
 
-		velocity = lA;
-		otherObject->setVelocity(lB);
+		//while((x + boundX > obj_x - obj_bound_x &&
+	 //  x - boundX < obj_x + obj_bound_x &&
+	 //  y + boundY > obj_y - obj_bound_y &&
+	 //  y - boundY < obj_y + obj_bound_y
+	 //  )
+	 //  )
+		//{
+		//	//lA.x += 0.01;
+		//	//lB.x -= 0.01;
+		//	y += 0.01;
+		//	floor'
+		//	//Update();
+		//	
+		//}
+
+
+		if(xNull && yNull)
+		{
+			lA = Vector(0,0);
+		}
+
+
+		if(xBNull && yBNull)
+		{
+			lB	= Vector(0,0);
+		}
+
+
+		
+			velocity = lA;
+			otherObject->setVelocity(lB);
+
+
+			if((x + boundX > obj_x - obj_bound_x &&
+				x - boundX < obj_x + obj_bound_x &&
+				y + boundY > obj_y - obj_bound_y &&
+				y - boundY < obj_y + obj_bound_y
+				))
+			{
+				float tX = (x + boundX) - (obj_x + obj_bound_x);
+				float tY = (y + boundY) - (obj_y + obj_bound_y);
+
+				if(tX < 0) tX *= -1;
+				if(tY < 0) tY *= -1;
+
+					/*if((x+boundX) > (obj_bound_x + obj_x))
+						x += tX/(gFPS/2);
+					else
+						x -= tX/(gFPS/2);
+
+					if((y+boundY) > (obj_bound_y + obj_y))
+						y += tY/(gFPS/2);
+					else
+						y -= tY/(gFPS/2);
+
+						
+*/
+				int fator = 10;
+					if((x+boundX) > (obj_bound_x + obj_x))
+						x += tX/(gFPS/fator);
+					else
+						x -= tX/(gFPS/fator);
+
+					if((y+boundY) > (obj_bound_y + obj_y))
+						y += tY/(gFPS/fator);
+					else
+						y -= tY/(gFPS/fator);
+
+					if(x < 0 + boundX)
+					{
+						x = 0 + boundX;
+						velocity.x *= -1;
+					}
+					else if(x > SCREEN_W - boundX)
+					{
+						x = SCREEN_W - boundX;
+						velocity.x *= -1;
+					}
+
+					if(y < 0 + boundY)
+					{
+						y = 0 + boundY;
+						velocity.y *= -1;
+					}
+					else if(y > SCREEN_H - boundY)
+					{
+						y = SCREEN_H - boundY;
+						velocity.y *= -1;
+	}
+			}
+
+
+		/*if(xNull && yNull && xBNull && yBNull)
+		{
+			x += boundAx;
+			y += boundAy;
+		}*/
+
+
+
+		
 
 		/*x += pAx/2;
 		y += pAy/2;

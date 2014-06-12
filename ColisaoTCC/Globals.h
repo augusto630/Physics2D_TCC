@@ -2,9 +2,12 @@
 #include <allegro5\allegro_font.h>
 #include "Vector.h"
 
-static int SCREEN_H = 600;//Default
-static int SCREEN_W = 1300;//Default
-static int gFPS = 60;
+static int SCREEN_H = 700;//Default
+static int SCREEN_W = 700;//Default
+static int gFPS = 100;
+static bool isQuadTree = false;
+static bool isGUniforme = false;
+static bool isForcaBruta = false;
 
 //Underline for every enum created by me
 enum DIRECTION_LEFT_RIGHT{_DIRECTION_LEFT = -1, _DIRECTION_RIGHT = 1};//See GameObject.h: dirX

@@ -31,6 +31,26 @@ Core::Core()
 	frames = 0;
 	gameFPS = 60;
 	soundSamples = 1;
+	maxFPS = 0;
+	minFPS = 9999;
+	loopCount = 0;
+
+
+
+
+	 fps1 = 0;
+	 frames_done = 0;
+	 old_time = 0;
+ 
+	 frame_index = 0;//used to store the index of the last updated value in the array
+	for(int ii = 0; ii < 10; ii++)
+		frames_array[ii] = 0;//initialize the array to 0
+
+
+
+	qTree = Quadtree( 0.0f, 0.0f, SCREEN_W, SCREEN_H, 0, 5,NULL);
+
+
 }
 
 void Core::Start(void)
@@ -164,6 +184,7 @@ void Core::GameLoop()
 	al_start_timer(timer);
 
 	while(!done){
+
 
 		ALLEGRO_EVENT event;
 		al_wait_for_event(event_queue,&event);		
@@ -327,20 +348,62 @@ void Core::GameLoop()
 				KeySpace();
 			}
 
-			for(std::list<GameObject *>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
-				if(*iter)
-					(*iter)->Update();
 
 
-			for(std::list<GameObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+			#pragma region ForcaBruta
+			if(isForcaBruta)
 			{
-				for(std::list<GameObject *>::iterator it2 = it; it2 != objects.end(); ++it2)
+				for(std::list<GameObject *>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
+				if(*iter){
+					(*iter)->Update();
+					for(std::list<GameObject *>::iterator it2 = iter; it2 != objects.end(); ++it2)
 				{
-					if(it != it2){
-						(*it)->CheckCollisions(*it2);
+					if(*iter != *it2){
+						(*iter)->CheckCollisions(*it2);
 					}
+					loopCount++;
+				}
 				}
 			}
+			#pragma endregion ForcaBruta
+			#pragma region QuadTree
+			else if(isQuadTree){
+				for(std::list<GameObject *>::iterator iter = objects.begin(); iter != objects.end(); ++iter){
+					if(*iter){
+						(*iter)->Update();
+
+
+						qTree.AddObject(*iter);
+						loopCount++;
+						std::list<GameObject *> objlist = qTree.GetObjectsAt((*iter)->getX(),(*iter)->getY());
+
+						for(std::list<GameObject *>::iterator it2 = objlist.begin(); it2 != objlist.end(); ++it2)
+						{
+							if(*iter != *it2){
+								(*iter)->CheckCollisions(*it2);
+							}
+							loopCount++;
+						}
+					}
+				}
+				qTree.draw();
+				qTree.Clear();
+			}
+			#pragma endregion QuadTree	
+			#pragma region GUniforme
+			else if(isGUniforme)
+			{
+			}
+			#pragma endregion GUniforme
+			#pragma region Sem Física
+			else{
+				for(std::list<GameObject *>::iterator iter = objects.begin(); iter != objects.end(); ++iter){
+					if(*iter)
+						(*iter)->Update();
+					loopCount++;
+				}
+			}
+			#pragma endregion Sem Física
 
 			redraw = true;
 		}
