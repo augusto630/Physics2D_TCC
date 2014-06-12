@@ -22,6 +22,12 @@
     <Filter Include="Core\Source Files">
       <UniqueIdentifier>{c4ceace3-7601-40a7-b42f-7f0c6ee6e950}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\QuadTree">
+      <UniqueIdentifier>{f871606a-e770-40c8-9f27-388994ac6408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\QuadTree">
+      <UniqueIdentifier>{f786ad51-f3e0-4b31-b0ae-b8f25f24d45a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -48,8 +54,17 @@
     <ClInclude Include="GradeUniforme.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Constructs.h">
+      <Filter>Header Files\QuadTree</Filter>
+    </ClInclude>
     <ClInclude Include="QuadTree.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTreeNode.h">
+      <Filter>Header Files\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTreeOccupant.h">
+      <Filter>Header Files\QuadTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,8 +92,17 @@
     <ClCompile Include="GradeUniforme.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Constructs.cpp">
+      <Filter>Source Files\QuadTree</Filter>
+    </ClCompile>
     <ClCompile Include="QuadTree.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTreeNode.cpp">
+      <Filter>Source Files\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTreeOccupant.cpp">
+      <Filter>Source Files\QuadTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

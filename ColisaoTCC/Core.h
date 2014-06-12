@@ -52,7 +52,6 @@ private:
 	long loopCount;
 	long loopCountC;
 	long controlTimeLoopCount;
-	Quadtree qTree;
 
 
 	int Allegro_Init();

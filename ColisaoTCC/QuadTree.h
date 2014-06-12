@@ -1,53 +1,38 @@
+/*     _____   _    _      ___      _____    _______   ______    ______   ______
+ *    /  _  \ | |  | |    / _ \    |  __ \  |__   __| |  __  \  |  ____| |  ____|
+ *    | | | | | |  | |   / /_\ \   | |  | |    | |    | |__| |  |  ____| |  ____|
+ *    | |_| | | |__| |  / _____ \  | |__| |    | |    |  __  /  | |____  | |____
+ *    \__  _/  \____/  /_/     \_\ |_____/     |_|    |_|  \_\  |______| |______|
+ *       \_\
+ *
+ *		Eric Laukien
+ */
 
-#include <list>
-#include "GameObject.h"
 
-class Quadtree {
-public:
-	Quadtree(float x, float y, float width, float height, int level, int maxLevel, Quadtree* parent);
+#include "QuadTreeNode.h"
+#include "QuadTreeOccupant.h"
 
-	Quadtree();
+#include <unordered_set>
 
-	void					AddObject(GameObject *object);
-	std::list<GameObject*>				GetObjectsAt(float x, float y);
-	void					Clear();
-	void draw()
-	{
-
-		if(objects.size() > 1)
-		{
-
-			al_draw_line(x - width, y - height, x - width, y + height, al_map_rgb(255,0,0), 1);
-			al_draw_line(x - width, y - height, x + width, y - height, al_map_rgb(255,0,0), 1);
-			al_draw_line(x + width, y + height, x + width, y - height, al_map_rgb(255,0,0), 1);
-			al_draw_line(x + width, y + height, x - width, y + height, al_map_rgb(255,0,0), 1);
-		}
-
-		if(level != maxLevel){
-			NW->draw();
-			NE->draw();
-			SW->draw();
-			SE->draw();
-		}
-
-	};
-
+class QuadTree
+{
 private:
-	float					x;
-	float					y;
-	float					width;
-	float					height;
-	int					level;
-	int					maxLevel;
-	std::list<GameObject*>				objects;
+	std::unordered_set<QuadTreeOccupant*> outsideRoot;
 
-	Quadtree *				parent;
-	Quadtree *				NW;
-	Quadtree *				NE;
-	Quadtree *				SW;
-	Quadtree *				SE;
+	QuadTreeNode* rootNode;
 
-	bool					contains(Quadtree *child, GameObject *object);
+public:
+	QuadTree(const AABB &startRegion);
+	~QuadTree();
 
+	void AddOccupant(QuadTreeOccupant* pOc);
+	void ClearTree(const AABB &newStartRegion);
+
+	void Query(const AABB &queryRegion, std::vector<QuadTreeOccupant*> &queryResult);
+
+	unsigned int GetNumOccupants();
+
+	friend class QuadTreeNode;
+	friend class QuadTreeOccupant;
 };
 
