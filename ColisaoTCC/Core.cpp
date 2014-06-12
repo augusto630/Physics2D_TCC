@@ -45,6 +45,12 @@ Core::Core()
 	 frame_index = 0;//used to store the index of the last updated value in the array
 	for(int ii = 0; ii < 10; ii++)
 		frames_array[ii] = 0;//initialize the array to 0
+
+
+
+	qTree = Quadtree( 0.0f, 0.0f, SCREEN_W, SCREEN_H, 0, 5,NULL);
+
+
 }
 
 void Core::Start(void)
@@ -168,8 +174,6 @@ void Core::GameLoop()
 	
 	ALLEGRO_KEYBOARD_STATE key_state;
 	bool redraw = false;
-	
-	Quadtree qTree( 0.0f, 0.0f, SCREEN_W, SCREEN_H, 0, 5,NULL);
 
 	al_get_keyboard_state(&key_state);
 	al_register_event_source(event_queue,al_get_mouse_event_source());//Register Mouse queue

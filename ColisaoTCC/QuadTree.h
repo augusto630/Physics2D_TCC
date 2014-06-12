@@ -1,38 +1,53 @@
-/*     _____   _    _      ___      _____    _______   ______    ______   ______
- *    /  _  \ | |  | |    / _ \    |  __ \  |__   __| |  __  \  |  ____| |  ____|
- *    | | | | | |  | |   / /_\ \   | |  | |    | |    | |__| |  |  ____| |  ____|
- *    | |_| | | |__| |  / _____ \  | |__| |    | |    |  __  /  | |____  | |____
- *    \__  _/  \____/  /_/     \_\ |_____/     |_|    |_|  \_\  |______| |______|
- *       \_\
- *
- *		Eric Laukien
- */
 
+#include <list>
+#include "GameObject.h"
 
-#include "QuadTreeNode.h"
-#include "QuadTreeOccupant.h"
-
-#include <unordered_set>
-
-class QuadTree
-{
-private:
-	std::unordered_set<QuadTreeOccupant*> outsideRoot;
-
-	QuadTreeNode* rootNode;
-
+class Quadtree {
 public:
-	QuadTree(const AABB &startRegion);
-	~QuadTree();
+	Quadtree(float x, float y, float width, float height, int level, int maxLevel, Quadtree* parent);
 
-	void AddOccupant(QuadTreeOccupant* pOc);
-	void ClearTree(const AABB &newStartRegion);
+	Quadtree();
 
-	void Query(const AABB &queryRegion, std::vector<QuadTreeOccupant*> &queryResult);
+	void					AddObject(GameObject *object);
+	std::list<GameObject*>				GetObjectsAt(float x, float y);
+	void					Clear();
+	void draw()
+	{
 
-	unsigned int GetNumOccupants();
+		if(objects.size() > 1)
+		{
 
-	friend class QuadTreeNode;
-	friend class QuadTreeOccupant;
+			al_draw_line(x - width, y - height, x - width, y + height, al_map_rgb(255,0,0), 1);
+			al_draw_line(x - width, y - height, x + width, y - height, al_map_rgb(255,0,0), 1);
+			al_draw_line(x + width, y + height, x + width, y - height, al_map_rgb(255,0,0), 1);
+			al_draw_line(x + width, y + height, x - width, y + height, al_map_rgb(255,0,0), 1);
+		}
+
+		if(level != maxLevel){
+			NW->draw();
+			NE->draw();
+			SW->draw();
+			SE->draw();
+		}
+
+	};
+
+private:
+	float					x;
+	float					y;
+	float					width;
+	float					height;
+	int					level;
+	int					maxLevel;
+	std::list<GameObject*>				objects;
+
+	Quadtree *				parent;
+	Quadtree *				NW;
+	Quadtree *				NE;
+	Quadtree *				SW;
+	Quadtree *				SE;
+
+	bool					contains(Quadtree *child, GameObject *object);
+
 };
 

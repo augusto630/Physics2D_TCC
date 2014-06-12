@@ -1,51 +1,115 @@
-#include "QuadTree.h"
+#include "Quadtree.h"
 
-QuadTree::QuadTree(const AABB &startRegion)
+#include <iostream>
+#include <sstream>
+
+Quadtree::Quadtree(float _x, float _y, float _width, float _height, int _level, int _maxLevel, Quadtree* _parent) :
+	x		(_x),
+	y		(_y),
+	width	(_width),
+	height	(_height),
+	level	(_level),
+	maxLevel(_maxLevel),
+	parent  (_parent)
 {
-	rootNode = new QuadTreeNode(startRegion, 1, NULL, this);
+	
+	if (level == maxLevel) {
+		return;
+	}
+
+	NW = new Quadtree(x, y, width / 2.0f, height / 2.0f, level+1, maxLevel,this);
+	NE = new Quadtree(x + width / 2.0f, y, width / 2.0f, height / 2.0f, level+1, maxLevel,this);
+	SW = new Quadtree(x, y + height / 2.0f, width / 2.0f, height / 2.0f, level+1, maxLevel,this);
+	SE = new Quadtree(x + width / 2.0f, y + height / 2.0f, width / 2.0f, height / 2.0f, level+1, maxLevel,this);
+
+	parent = _parent;
 }
 
-QuadTree::~QuadTree()
+Quadtree::Quadtree()
 {
-	delete rootNode;
+	if (level == maxLevel)
+		return;
+
+	delete NW;
+	delete NE;
+	delete SW;
+	delete SE;
 }
 
-void QuadTree::AddOccupant(QuadTreeOccupant* pOc)
-{
-	if(rootNode->region.Contains(pOc->aabb)) // If it fits inside the root node
-		rootNode->AddOccupant(pOc);
-	else // Otherwise, add it to the outside root set
-	{
-		outsideRoot.insert(pOc);
-
-		// Set the pointers properly
-		pOc->pQuadTreeNode = NULL; // Not required unless removing a node and then adding it again
-		pOc->pQuadTree = this;
+void Quadtree::AddObject(GameObject *object) {
+	if (level == maxLevel) {
+		objects.push_back(object);
+		return;
+	}
+	if (contains(NW, object)) {
+		NW->AddObject(object); return;
+	} else if (contains(NE, object)) {
+		NE->AddObject(object); return;
+	} else if (contains(SW, object)) {
+		SW->AddObject(object); return;
+	} else if (contains(SE, object)) {
+		SE->AddObject(object); return;
+	}
+	if (contains(this, object)) {
+		objects.push_back(object);
 	}
 }
 
-void QuadTree::ClearTree(const AABB &newStartRegion)
-{
-	delete rootNode;
-	rootNode = new QuadTreeNode(newStartRegion, 1, NULL, this);
-
-	// Clear ouside root
-	outsideRoot.clear();
+std::list<GameObject*> Quadtree::GetObjectsAt(float _x, float _y) {
+	if (level == maxLevel) {
+		return objects;
+	}
+	
+	std::list<GameObject *> returnObjects, childReturnObjects;
+	if (!objects.empty()) {
+		returnObjects = objects;
+	}
+	if (_x > x + width / 2.0f && _x < x + width) {
+		if (_y > y + height / 2.0f && _y < y + height) {
+			childReturnObjects = SE->GetObjectsAt(_x, _y);
+			returnObjects.insert(returnObjects.end(), childReturnObjects.begin(), childReturnObjects.end());
+			return returnObjects;
+		} else if (_y > y && _y <= y + height / 2.0f) {
+			childReturnObjects = NE->GetObjectsAt(_x, _y);
+			returnObjects.insert(returnObjects.end(), childReturnObjects.begin(), childReturnObjects.end());
+			return returnObjects;
+		}
+	} else if (_x > x && _x <= x + width / 2.0f) {
+		if (_y > y + height / 2.0f && _y < y + height) {
+			childReturnObjects = SW->GetObjectsAt(_x, _y);
+			returnObjects.insert(returnObjects.end(), childReturnObjects.begin(), childReturnObjects.end());
+			return returnObjects;
+		} else if (_y > y && _y <= y + height / 2.0f) {
+			childReturnObjects = NW->GetObjectsAt(_x, _y);
+			returnObjects.insert(returnObjects.end(), childReturnObjects.begin(), childReturnObjects.end());
+			return returnObjects;
+		}
+	}
+	return returnObjects;
 }
 
-void QuadTree::Query(const AABB &queryRegion, std::vector<QuadTreeOccupant*> &queryResult)
-{
-	// First parse the occupants outside of the root and
-	// add them to the array if the fit in the query region
-	for(std::unordered_set<QuadTreeOccupant*>::iterator it = outsideRoot.begin(); it != outsideRoot.end(); it++)
-		if(it._Ptr->_Myval->aabb.Intersects(queryRegion))
-			queryResult.push_back(*it);
-
-	// Then query the tree itself
-	rootNode->Query(queryRegion, queryResult);
+void Quadtree::Clear() {
+	if (level == maxLevel) {
+		objects.clear();
+		return;
+	} else {
+		NW->Clear();
+		NE->Clear();
+		SW->Clear();
+		SE->Clear();
+	}
+	if (!objects.empty()) {
+		objects.clear();
+	}
 }
 
-unsigned int QuadTree::GetNumOccupants()
-{
-	return rootNode->numOccupants;
+bool Quadtree::contains(Quadtree *child, GameObject *object) {
+	return	 !(object->getX() < child->x ||
+				object->getY() < child->y ||
+				object->getX() > child->x + child->width  ||
+				object->getY() > child->y + child->height ||
+				object->getX() + object->getBoundX() < child->x ||
+				object->getY() + object->getBoundY() < child->y ||
+				object->getX() + object->getBoundX() > child->x + child->width ||
+				object->getY() + object->getBoundY() > child->y + child->height);
 }

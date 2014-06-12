@@ -5,7 +5,7 @@
 static int SCREEN_H = 700;//Default
 static int SCREEN_W = 700;//Default
 static int gFPS = 100;
-static bool isQuadTree = true;
+static bool isQuadTree = false;
 static bool isGUniforme = false;
 static bool isForcaBruta = false;
 
