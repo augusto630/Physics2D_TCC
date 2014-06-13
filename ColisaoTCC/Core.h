@@ -52,7 +52,7 @@ private:
 	long loopCount;
 	long loopCountC;
 	long controlTimeLoopCount;
-	Quadtree qTree;
+	QuadTree qTree;
 
 
 	int Allegro_Init();
@@ -225,8 +225,17 @@ public:
 	int Init(void);
 	void Start(void);
 	void Stop(void);
-	void addObject(GameObject *object){Core::objects.push_back(object);};
-	void popObject(void){Core::objects.pop_front();};
+	void addObject(GameObject *object)
+	{
+		Core::objects.push_back(object);
+		qTree.AddOccupant(object->getQuadTreeOccupant());
+	};
+	void popObject(void)
+	{
+		Core::objects.front()->getQuadTreeOccupant()->RemoveFromTree();
+		Core::objects.pop_front();
+		
+	};
 	std::list<GameObject *> *getObjects(){return &objects;};
 	std::list<GameObject *> *getObjects(ID id)
 	{

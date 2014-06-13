@@ -11,6 +11,7 @@
 
 #include "QuadTreeNode.h"
 #include "QuadTreeOccupant.h"
+#include "Globals.h"
 
 #include <unordered_set>
 
@@ -23,6 +24,7 @@ private:
 
 public:
 	QuadTree(const AABB &startRegion);
+	QuadTree();
 	~QuadTree();
 
 	void AddOccupant(QuadTreeOccupant* pOc);

@@ -45,12 +45,6 @@ Core::Core()
 	 frame_index = 0;//used to store the index of the last updated value in the array
 	for(int ii = 0; ii < 10; ii++)
 		frames_array[ii] = 0;//initialize the array to 0
-
-
-
-	qTree = Quadtree( 0.0f, 0.0f, SCREEN_W, SCREEN_H, 0, 5,NULL);
-
-
 }
 
 void Core::Start(void)
@@ -324,7 +318,8 @@ void Core::GameLoop()
 
 			if(s_mouse[_MOUSE_DOWN])
 			{
-				s_mouse[_MOUSE_DOWN] = false;
+				if(!isInserirMultiplosItens)
+					s_mouse[_MOUSE_DOWN] = false;
 				MouseDown();
 			}
 			if(s_mouse[_MOUSE_UP])
@@ -373,9 +368,21 @@ void Core::GameLoop()
 						(*iter)->Update();
 
 
-						qTree.AddObject(*iter);
-						loopCount++;
-						std::list<GameObject *> objlist = qTree.GetObjectsAt((*iter)->getX(),(*iter)->getY());
+						std::vector<QuadTreeOccupant*> result;
+						qTree.Query((*iter)->getQuadTreeOccupant()->aabb,result);
+
+						for(std::vector<QuadTreeOccupant *>::iterator it = result.begin(); it != result.end(); ++it) 
+						{
+							//if(*iter != *it2){
+
+								//(*iter)->CheckCollisions((*it)->);
+							//}
+							loopCount++;
+						}
+						
+
+
+						/*std::list<GameObject *> objlist = qTree.Query((*iter)->getX(),(*iter)->getY());
 
 						for(std::list<GameObject *>::iterator it2 = objlist.begin(); it2 != objlist.end(); ++it2)
 						{
@@ -383,11 +390,10 @@ void Core::GameLoop()
 								(*iter)->CheckCollisions(*it2);
 							}
 							loopCount++;
-						}
+						}*/
 					}
 				}
-				qTree.draw();
-				qTree.Clear();
+				
 			}
 			#pragma endregion QuadTree	
 			#pragma region GUniforme

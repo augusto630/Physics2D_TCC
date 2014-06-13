@@ -18,7 +18,16 @@ void Ball::Init(ALLEGRO_BITMAP *image, ALLEGRO_COLOR *color)
 	Vector acceleration(0,0);
 	_bound bound = {5,5};
 
-	GameObject::Init(position,velocity,acceleration,bound);
+	
+	QuadTreeOccupant ocp;
+	AABB region(Vec2f(x - bound.x, y + bound.y), Vec2f(x + bound.x, y - bound.y));
+	ocp.aabb = region;
+
+
+
+	GameObject::Init(position,velocity,acceleration,bound,&ocp);
+
+	
 
 	setID(_BALL);
 	setAlive(true);

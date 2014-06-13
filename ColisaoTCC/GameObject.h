@@ -5,6 +5,7 @@
 #include <allegro5\allegro_primitives.h>
 #include <allegro5\allegro_font.h>
 #include "Globals.h"
+#include "QuadTreeOccupant.h"
 
 class GameObject
 {
@@ -32,6 +33,7 @@ protected:
 
 	int boundX;
 	int boundY;
+	QuadTreeOccupant ocp;
 
 #pragma region
 	int maxFrame;
@@ -50,7 +52,7 @@ public:
 	GameObject();
 	void virtual Destroy();
 
-	void Init(_position position, Vector velocity,Vector acceleration, _bound bound);
+	void Init(_position position, Vector velocity,Vector acceleration, _bound bound,QuadTreeOccupant* ocp);
 	void virtual Update();
 	void virtual Render();
  
@@ -85,10 +87,13 @@ public:
 	Vector *getDynamicForce(){return &dynamicForce;}
 	Vector *getStaticForce(){return &staticForce;}
 
-	void resetForces(){velocity = velocityI;dynamicForce.Set(0,0);};
+	void resetForces(){velocity = velocityI;dynamicForce.Set(0,0);}
 
 	int getBoundX(){return boundX;}
 	int getBoundY(){return boundY;}
+
+	QuadTreeOccupant *getQuadTreeOccupant(){return &ocp;}
+	void setQuadTreeOccupant(QuadTreeOccupant* ocp){ GameObject::ocp = *ocp;}
 
 	int getID(){return ID;}
 	void setID(int ID){GameObject::ID = ID;}

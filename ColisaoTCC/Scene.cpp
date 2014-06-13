@@ -43,7 +43,7 @@ void Scene::MouseDown(void)
 		}*/
 		//for(int i=0; i < 10; i++)
 		if(rand() % 1 == 0){
-			float mass = rand() % 1000 + 1;
+			float mass = rand() % 10000 + 1;
 			//float mass = 1;
 			Ball *ball = new Ball();
 			ball->Init();

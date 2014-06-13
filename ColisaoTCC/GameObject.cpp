@@ -30,7 +30,7 @@ void GameObject::Destroy()
 		al_destroy_bitmap(image);
 }
 
-void GameObject::Init(_position position, Vector velocity,Vector acceleration, _bound bound)
+void GameObject::Init(_position position, Vector velocity,Vector acceleration, _bound bound, QuadTreeOccupant *ocp)
 {
 	const_atrict = 0;
 	GameObject::x = position.x;
@@ -41,6 +41,9 @@ void GameObject::Init(_position position, Vector velocity,Vector acceleration, _
 
 	GameObject::boundX = bound.x;
 	GameObject::boundY = bound.y;
+
+	GameObject::ocp = *ocp;
+
 }
 
 Vector GameObject::getVelocityR()
@@ -124,8 +127,13 @@ void GameObject::Update()
 
 	if(modulo(vR.x) < 0.1) vR.x = 0;
 	if(modulo(vR.y) < 0.1) vR.y = 0;
+
 	x += vR.x;
 	y += vR.y;
+
+	ocp.aabb.lowerBound = Vec2f(x - boundX, y + boundY);
+	ocp.aabb.upperBound = Vec2f(x + boundX, y - boundY);
+	ocp.UpdateTreeStatus();
 }
 
 

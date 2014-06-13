@@ -5,6 +5,12 @@ QuadTree::QuadTree(const AABB &startRegion)
 	rootNode = new QuadTreeNode(startRegion, 1, NULL, this);
 }
 
+QuadTree::QuadTree()
+{
+	AABB stRegion(AABB(Vec2f(0,0),Vec2f(SCREEN_W,SCREEN_H)));
+	rootNode = new QuadTreeNode(stRegion,1,NULL,this);
+}
+
 QuadTree::~QuadTree()
 {
 	delete rootNode;
