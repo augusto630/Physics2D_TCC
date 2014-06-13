@@ -24,7 +24,7 @@ void Scene::Tick(void)
 		l_object->setX(Scene::getMouse_position().x);
 		l_object->setY(Scene::getMouse_position().y);
 		l_object->resetForces();
-		
+
 	}
 
 	//checkCollisions();
@@ -37,8 +37,8 @@ void Scene::MouseDown(void)
 	if(Scene::getMouse_button() == _MOUSE_LEFT){
 		/*if(ballCount >= 1000)
 		{
-			Scene::popObject();
-			ballCount --;
+		Scene::popObject();
+		ballCount --;
 
 		}*/
 		//for(int i=0; i < 10; i++)
@@ -55,7 +55,7 @@ void Scene::MouseDown(void)
 			ALLEGRO_COLOR cor;
 
 			//if(mass > 1)
-				cor = al_map_rgb(4*mass,10*mass,25*mass);
+			cor = al_map_rgb(4*mass,10*mass,25*mass);
 			//else
 			//	cor = al_map_rgb(100*mass,0,0);
 
@@ -63,13 +63,13 @@ void Scene::MouseDown(void)
 			//ball->setAtrict(0.1);
 
 			Vector gravity(0,30);//30 é bom
-			
+
 			//ball->addStaticForce(gravity);
 
-		//	ball->addForce(Vector(rand()%1+1,rand()%1+1));
+			//	ball->addForce(Vector(rand()%1+1,rand()%1+1));
 
 			ball->addForce(Vector(0.1,0.1));
-			
+
 
 
 			//ball->addForce(Vector(3,-8));
@@ -82,6 +82,35 @@ void Scene::MouseDown(void)
 
 			addObject(ball);
 			l_object = ball;
+
+
+
+			std::ofstream saidaFPS;
+			std::ofstream saidaLoopC;
+
+			if(isQuadTree){
+				saidaFPS.open ("QuadTreeFPS.dat", std::ios_base::app);
+				saidaLoopC.open ("QuadTreeLoop.dat", std::ios_base::app);
+			}
+			else if(isGUniforme){
+				saidaFPS.open("GradeUniformeFPS.dat", std::ios_base::app);
+				saidaLoopC.open("GradeUniformeLoop.dat", std::ios_base::app);
+			}
+			else{
+				saidaFPS.open("ForcaBrutaFPS.dat", std::ios_base::app);
+				saidaLoopC.open("ForcaBrutaLoop.dat", std::ios_base::app);
+			}
+
+			if(saidaFPS.is_open() && saidaLoopC.is_open()){
+
+				
+
+				saidaFPS  << ballCount<<" "<<getFPS()<<"\n";
+				saidaLoopC << ballCount<<" "<<getLoopCount()<<"\n";
+
+				saidaFPS.close();
+				saidaLoopC.close();
+			}
 		}
 	}
 

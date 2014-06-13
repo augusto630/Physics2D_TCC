@@ -4,10 +4,14 @@
 
 static int SCREEN_H = 700;//Default
 static int SCREEN_W = 700;//Default
+const int columnGU = 10;
+const int rowGU = 10;
+
 static int gFPS = 100;
-static bool isQuadTree = false;
+static bool isQuadTree = true;
 static bool isGUniforme = false;
 static bool isForcaBruta = false;
+static bool isInsertMultiple = false;
 
 //Underline for every enum created by me
 enum DIRECTION_LEFT_RIGHT{_DIRECTION_LEFT = -1, _DIRECTION_RIGHT = 1};//See GameObject.h: dirX

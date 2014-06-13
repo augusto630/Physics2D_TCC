@@ -6,6 +6,10 @@
 
 #include "Ball.h"
 
+#include <fstream>
+#include <string>
+#include <iostream>
+
 class Scene: public Core
 {
 public:

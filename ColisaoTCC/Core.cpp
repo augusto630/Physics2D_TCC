@@ -174,6 +174,7 @@ void Core::GameLoop()
 	
 	ALLEGRO_KEYBOARD_STATE key_state;
 	bool redraw = false;
+	GradeUniforme grade(0,0,SCREEN_W,SCREEN_H,50,50);
 
 	al_get_keyboard_state(&key_state);
 	al_register_event_source(event_queue,al_get_mouse_event_source());//Register Mouse queue
@@ -324,7 +325,8 @@ void Core::GameLoop()
 
 			if(s_mouse[_MOUSE_DOWN])
 			{
-				s_mouse[_MOUSE_DOWN] = false;
+				if(!isInsertMultiple)
+					s_mouse[_MOUSE_DOWN] = false;
 				MouseDown();
 			}
 			if(s_mouse[_MOUSE_UP])
@@ -386,13 +388,33 @@ void Core::GameLoop()
 						}
 					}
 				}
-				qTree.draw();
+				//qTree.draw();
 				qTree.Clear();
 			}
 			#pragma endregion QuadTree	
 			#pragma region GUniforme
 			else if(isGUniforme)
 			{
+				for(std::list<GameObject *>::iterator iter = objects.begin(); iter != objects.end(); ++iter){
+					if(*iter){
+						(*iter)->Update();
+
+
+						grade.AddObject(*iter);
+						loopCount++;
+						std::list<GameObject *> objlist = grade.GetObjectsAt((*iter)->getX(),(*iter)->getY());
+
+						for(std::list<GameObject *>::iterator it2 = objlist.begin(); it2 != objlist.end(); ++it2)
+						{
+							if(*iter != *it2){
+								(*iter)->CheckCollisions(*it2);
+							}
+							loopCount++;
+						}
+					}
+				}
+				//grade.draw();
+				grade.Clear();
 			}
 			#pragma endregion GUniforme
 			#pragma region Sem Física

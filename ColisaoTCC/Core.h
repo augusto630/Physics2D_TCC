@@ -14,7 +14,7 @@
 #include "Globals.h"
 
 #include "QuadTree.h"
-
+#include "GradeUniforme.h"
 
 #include <list>
 
@@ -73,6 +73,9 @@ protected:
 
 	void GameLoop();
 	void Destr();
+
+	long getLoopCount(){return loopCountC;};
+
 	int UpdateDisplay(ALLEGRO_EVENT event, bool redraw)
 	{
 
@@ -171,6 +174,7 @@ protected:
 		if(btmAtual) al_set_target_bitmap(btmAtual);
 		else al_set_target_backbuffer(display);
 	};
+
 	int getFPS()
 	{
 		//double t = al_get_time();
