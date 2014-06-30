@@ -16,7 +16,7 @@ void Ball::Init(ALLEGRO_BITMAP *image, ALLEGRO_COLOR *color)
 	
 	Vector velocity(0,0);
 	Vector acceleration(0,0);
-	_bound bound = {5,5};
+	_bound bound = {20,20};
 
 	GameObject::Init(position,velocity,acceleration,bound);
 

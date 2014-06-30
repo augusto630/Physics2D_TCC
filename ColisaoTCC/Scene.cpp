@@ -16,7 +16,8 @@ int Scene::Init()
 void Scene::Tick(void)
 {
 	//al_draw_scaled_bitmap(fundo,0,0,902,674,0,0,SCREEN_W,SCREEN_H,0);
-	al_draw_filled_rectangle(0,0,SCREEN_W,SCREEN_H,al_map_rgb(200,200,200));
+	//al_draw_filled_rectangle(0,0,SCREEN_W,SCREEN_H,al_map_rgb(200,200,200));
+	al_draw_scaled_bitmap(getBackground(),0,0,1600,1200,0,0,SCREEN_W,SCREEN_H,0);
 
 
 	if(l_object && Scene::getMouse_button() == _MOUSE_RIGHT)
@@ -55,7 +56,7 @@ void Scene::MouseDown(void)
 			ALLEGRO_COLOR cor;
 
 			//if(mass > 1)
-			cor = al_map_rgb(4*mass,10*mass,25*mass);
+			cor = al_map_rgba(4*mass,10*mass,25*mass,100);
 			//else
 			//	cor = al_map_rgb(100*mass,0,0);
 
@@ -68,7 +69,7 @@ void Scene::MouseDown(void)
 
 			//	ball->addForce(Vector(rand()%1+1,rand()%1+1));
 
-			ball->addForce(Vector(0.1,0.1));
+			ball->addForce(Vector(rand() % 1 +0.2,rand() %1+0.2));
 
 
 

@@ -24,6 +24,7 @@ class Core
 private:
 	ALLEGRO_DISPLAY *display;
 	ALLEGRO_BITMAP *buffer;
+	ALLEGRO_BITMAP *background;
 	ALLEGRO_TIMER *timer;
 	ALLEGRO_EVENT_QUEUE *event_queue;
 	ALLEGRO_FONT *font;
@@ -202,15 +203,16 @@ protected:
 	void drawFPS(void)
 	{
 
-		if(Core::isDrawFPS){
+		if(Core::isDrawFPS && debug){
 			//al_draw_textf(font,al_map_rgb(255,255,255),0,0,0,"FPS %d",fps1);
 		    al_draw_textf(font,al_map_rgb(255,255,255),0,0,0,"FPS %d",fps1);
 			al_draw_textf(font,al_map_rgb(255,255,255),0,10,0,"Min FPS %d",minFPS);
 			al_draw_textf(font,al_map_rgb(255,255,255),0,20,0,"Max FPS %d",maxFPS);
-			al_draw_textf(font,al_map_rgb(255,255,255),0,30,0,"Qtd Obj %d",objects.size());
+			
 			al_draw_textf(font,al_map_rgb(255,255,255),0,40,0,"Loop CTrl %d",loopCountC);
 			
 		}
+		al_draw_textf(font,al_map_rgb(255,255,255),0,30,0,"Qtd Obj %d",objects.size());
 	};
 	ALLEGRO_DISPLAY *createDisplay(void)
 {
@@ -256,6 +258,7 @@ public:
 	MOUSE_BUTTON getMouse_button(void){return b_mouse;}
 
 	ALLEGRO_FONT *getDefaultFont(){return font;}
+	ALLEGRO_BITMAP *getBackground(){return background;}
 
 	virtual void Tick(void);
 

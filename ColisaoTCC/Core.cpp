@@ -48,7 +48,7 @@ Core::Core()
 
 
 
-	qTree = Quadtree( 0.0f, 0.0f, SCREEN_W, SCREEN_H, 0, 5,NULL);
+	qTree = Quadtree( 0.0f, 0.0f, SCREEN_W, SCREEN_H, 1, nivelMaximo,NULL);
 
 
 }
@@ -149,6 +149,14 @@ int Core::Allegro_Init()
 		return -1;
 	}
 	al_init_image_addon();
+
+	background = al_load_bitmap("C:/bg.jpg");
+
+	if(!background)
+	{
+		fprintf(stderr,"Carregar Imagens falhou");
+		return -1;
+	}
 
 
 	return 0;
@@ -388,7 +396,8 @@ void Core::GameLoop()
 						}
 					}
 				}
-				//qTree.draw();
+				if(debug)
+					qTree.draw();
 				qTree.Clear();
 			}
 			#pragma endregion QuadTree	
@@ -412,8 +421,10 @@ void Core::GameLoop()
 							loopCount++;
 						}
 					}
+					
 				}
-				//grade.draw();
+				if(debug)
+						grade.draw();
 				grade.Clear();
 			}
 			#pragma endregion GUniforme
